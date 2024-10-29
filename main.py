@@ -1,10 +1,17 @@
 import re
 from urllib.request import urlopen
+from urllib.parse import quote
+import sys
+import io
 
+# Ustawienie odpowiedniego kodowania dla konsoli
+sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 
 # funkcja do pobrania i przetworzenia artykułów z danej kategorii
 def wyciagnij(kategoria):
-    url = "https://pl.wikipedia.org/wiki/Kategoria:" + kategoria.replace(' ', '_')
+    # Przygotowanie URL do kategorii z kodowaniem
+    kategoria_encoded = quote(kategoria)
+    url = "https://pl.wikipedia.org/wiki/Kategoria:" + kategoria_encoded
     odp = urlopen(url)
     html = odp.read().decode("utf-8")
 
@@ -13,7 +20,7 @@ def wyciagnij(kategoria):
     artykuly = artykuly[:2]  # ograniczenie
 
     for artykul in artykuly:
-        tytul = artykuly[1]
+        tytul = artykul[1]  # Poprawna zmiana, aby użyć tytulu z aktualnego artykułu
         artykul_url = f"https://pl.wikipedia.org{artykul[0]}"
 
         odp_artykul = urlopen(artykul_url)
@@ -35,15 +42,10 @@ def wyciagnij(kategoria):
 
         # wyświetlanie
         print(f"{tytul} | {artykul_url} | ", end="")
-
         print(" | ".join([link[0] for link in linki]), end=" | ")
-
         print(" | ".join(zdj_linki), end=" | ")
-
         print(" | ".join(linki2), end=" | ")
-
         print(" | ".join(kategorie))
-
         print("\n" + "-" * 50 + "\n")
 
 # input
