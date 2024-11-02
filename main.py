@@ -50,7 +50,6 @@ def wyciagnij(kategoria):
         print(" | ".join(images), end=" | ")
         print(" | ".join(linki2), end=" | ")
         print(" | ".join(kategorie))
-        print("\n" + "-" * 50 + "\n")
 
 # input
 kategoria_input = input("Podaj nazwę kategorii na Wikipedii: ").strip()
